@@ -96,7 +96,7 @@ const isNumber = str => !isNaN(str);
 
 controller.on('slash_command', function(slashCommand, message) {
   switch (message.command) {
-    case '/pewbeta':
+    case '/pew':
       // Make sure the token matches
       if (message.token !== process.env.VERIFICATION_TOKEN) return; // If not, just ignore it.
 
