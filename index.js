@@ -112,6 +112,7 @@ controller.on('slash_command', function(slashCommand, message) {
       // Case: PEW now
       if (message.text.substr(0, 3).toLowerCase() === 'now') {
         slashCommand.replyPublic(message, '<!group>: PEW now');
+        return;
       }
 
       // Case: PEW in 30 minutes
@@ -120,6 +121,7 @@ controller.on('slash_command', function(slashCommand, message) {
           message,
           `<!group>: PEW in ${message.text} minutes`
         );
+        return;
       }
 
       // Case: Repeat whatever user said if not a recognized format
