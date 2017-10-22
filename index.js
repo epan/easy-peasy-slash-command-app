@@ -91,11 +91,15 @@ controller.on('slash_command', function(slashCommand, message) {
 
       // Case: No arguments or 'help'
       if (message.text === '' || message.text === 'help') {
-        // slashCommand.replyPrivate(
-        //   message,
-        //   'I ping the #xdesix channel to play games with you. Try typing `/pew now` to invite people to play now or `/pew 30` to invite people to play in 30 minutes.'
-        // );
-        slashCommand.reply(message, {
+        slashCommand.replyPrivate(
+          message,
+          'I ping the #xdesix channel to play games with you. Try typing `/pew now` to invite people to play now or `/pew 30` to invite people to play in 30 minutes.'
+        );
+      }
+
+      // Case: PEW button
+      if (message.text.substr(0, 6).toLowerCase() === 'button') {
+        slashCommand.replyPrivate(message, {
           attachments: [
             {
               title: 'Do you want to interact with my buttons?',
