@@ -63,7 +63,7 @@ if (process.env.MONGOLAB_URI) {
 var controller = Botkit.slackbot(config).configureSlackApp({
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  scopes: ['commands']
+  scopes: ['commands', 'chat:write:user', 'chat:write:bot', 'incoming-webhook']
 });
 
 controller.setupWebserver(process.env.PORT, function(err, webserver) {
@@ -97,8 +97,8 @@ controller.on('slash_command', function(slashCommand, message) {
         );
       }
 
-      // Case: PEW button
-      if (message.text.substr(0, 6).toLowerCase() === 'button') {
+      // Case: PEW private
+      if (message.text.substr(0, 6).toLowerCase() === 'private') {
         slashCommand.replyPrivate(message, {
           attachments: [
             {
@@ -107,15 +107,67 @@ controller.on('slash_command', function(slashCommand, message) {
               attachment_type: 'default',
               actions: [
                 {
-                  name: 'yes',
-                  text: 'Yes',
-                  value: 'yes',
+                  name: 'now',
+                  text: 'Now',
+                  value: 'now',
                   type: 'button'
                 },
                 {
-                  name: 'no',
-                  text: 'No',
-                  value: 'no',
+                  name: '15',
+                  text: '15',
+                  value: '15',
+                  type: 'button'
+                },
+                {
+                  name: '30',
+                  text: '30',
+                  value: '30',
+                  type: 'button'
+                },
+                {
+                  name: '60',
+                  text: '60',
+                  value: '60',
+                  type: 'button'
+                }
+              ]
+            }
+          ]
+        });
+        return;
+      }
+
+      // Case: PEW public
+      if (message.text.substr(0, 6).toLowerCase() === 'public') {
+        slashCommand.reply(message, {
+          attachments: [
+            {
+              title: 'Do you want to interact with my buttons?',
+              callback_id: '123',
+              attachment_type: 'default',
+              actions: [
+                {
+                  name: 'now',
+                  text: 'Now',
+                  value: 'now',
+                  type: 'button'
+                },
+                {
+                  name: '15',
+                  text: '15',
+                  value: '15',
+                  type: 'button'
+                },
+                {
+                  name: '30',
+                  text: '30',
+                  value: '30',
+                  type: 'button'
+                },
+                {
+                  name: '60',
+                  text: '60',
+                  value: '60',
                   type: 'button'
                 }
               ]
