@@ -102,16 +102,40 @@ controller.on('slash_command', function(slashCommand, message) {
 
       // Case: No arguments or 'help'
       if (message.text === '' || message.text === 'help') {
-        slashCommand.replyPrivate(
-          message,
-          'I ping the #xdesix channel to play games with you. Try typing `/pew now` to invite people to play now or `/pew 30` to invite people to play in 30 minutes.'
-        );
+        // slashCommand.replyPrivate(
+        //   message,
+        //   'I ping the #xdesix channel to play games with you. Try typing `/pew now` to invite people to play now or `/pew 30` to invite people to play in 30 minutes.'
+        // );
+        slashCommand.reply(message, {
+          attachments:[
+            {
+              title: ‘Do you want to interact with my buttons?’,
+              callback_id: ‘123’,
+              attachment_type: ‘default’,
+              actions: [
+                 {
+                    “name”:”yes”,
+                    “text”: “Yes”,
+                    “value”: “yes”,
+                    “type”: “button”,
+                 },
+                 {
+                     “name”:”no”,
+                     “text”: “No”,
+                     “value”: “no”,
+                     “type”: “button”,
+                 }
+              ]
+            }
+          ]
+        });
         return;
       }
 
       // Case: PEW now
       if (message.text.substr(0, 3).toLowerCase() === 'now') {
         slashCommand.replyPublic(message, '<!group>: PEW now');
+        return;
       }
 
       // Case: PEW in 30 minutes
@@ -120,6 +144,7 @@ controller.on('slash_command', function(slashCommand, message) {
           message,
           `<!group>: PEW in ${message.text} minutes`
         );
+        return;
       }
 
       // Case: Repeat whatever user said if not a recognized format
