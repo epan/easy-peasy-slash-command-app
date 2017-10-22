@@ -43,15 +43,8 @@
 /* Uses the slack button feature to offer a real time bot to multiple teams */
 var Botkit = require('botkit');
 
-if (
-  !process.env.CLIENT_ID ||
-  !process.env.CLIENT_SECRET ||
-  !process.env.PORT ||
-  !process.env.VERIFICATION_TOKEN
-) {
-  console.log(
-    'Error: Specify CLIENT_ID, CLIENT_SECRET, VERIFICATION_TOKEN and PORT in environment'
-  );
+if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET || !process.env.PORT || !process.env.VERIFICATION_TOKEN) {
+  console.log('Error: Specify CLIENT_ID, CLIENT_SECRET, VERIFICATION_TOKEN and PORT in environment');
   process.exit(1);
 }
 
@@ -76,11 +69,7 @@ var controller = Botkit.slackbot(config).configureSlackApp({
 controller.setupWebserver(process.env.PORT, function(err, webserver) {
   controller.createWebhookEndpoints(controller.webserver);
 
-  controller.createOauthEndpoints(controller.webserver, function(
-    err,
-    req,
-    res
-  ) {
+  controller.createOauthEndpoints(controller.webserver, function(err, req, res) {
     if (err) {
       res.status(500).send('ERROR: ' + err);
     } else {
@@ -107,24 +96,24 @@ controller.on('slash_command', function(slashCommand, message) {
         //   'I ping the #xdesix channel to play games with you. Try typing `/pew now` to invite people to play now or `/pew 30` to invite people to play in 30 minutes.'
         // );
         slashCommand.reply(message, {
-          attachments:[
+          attachments: [
             {
-              title: ‘Do you want to interact with my buttons?’,
-              callback_id: ‘123’,
-              attachment_type: ‘default’,
+              title: 'Do you want to interact with my buttons?',
+              callback_id: '123',
+              attachment_type: 'default',
               actions: [
-                 {
-                    “name”:”yes”,
-                    “text”: “Yes”,
-                    “value”: “yes”,
-                    “type”: “button”,
-                 },
-                 {
-                     “name”:”no”,
-                     “text”: “No”,
-                     “value”: “no”,
-                     “type”: “button”,
-                 }
+                {
+                  name: 'yes',
+                  text: 'Yes',
+                  value: 'yes',
+                  type: 'button'
+                },
+                {
+                  name: 'no',
+                  text: 'No',
+                  value: 'no',
+                  type: 'button'
+                }
               ]
             }
           ]
@@ -140,10 +129,7 @@ controller.on('slash_command', function(slashCommand, message) {
 
       // Case: PEW in 30 minutes
       if (isNumber(message.text)) {
-        slashCommand.replyPublic(
-          message,
-          `<!group>: PEW in ${message.text} minutes`
-        );
+        slashCommand.replyPublic(message, `<!group>: PEW in ${message.text} minutes`);
         return;
       }
 
@@ -153,9 +139,6 @@ controller.on('slash_command', function(slashCommand, message) {
       break;
 
     default:
-      slashCommand.replyPublic(
-        message,
-        "I'm afraid I don't know how to " + message.command + ' yet.'
-      );
+      slashCommand.replyPublic(message, "I'm afraid I don't know how to " + message.command + ' yet.');
   }
 });
